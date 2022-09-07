@@ -1,0 +1,14 @@
+<h1>Longest word game!</h1>
+
+<% @letters.each do |word| %>
+<%= "#{word} " %>
+<% end %>
+
+<br><br><br>
+
+<form action="score" method="post" data-turbo="false">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+  <input type="text" name="word" placeholder="Enter your longest word!">
+  <button type="submit" value="">Send</button>
+</form>
