@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
   get '/new' => 'games#new'
   post '/score' => 'games#score'
+  get '/score' => 'games#score'
 end
