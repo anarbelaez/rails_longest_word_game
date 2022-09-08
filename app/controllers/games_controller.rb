@@ -3,24 +3,22 @@ require 'json'
 
 class GamesController < ApplicationController
   def new
-    @letters = generate_grid # Letras aleatorias del alfabeto
+    @letters = generate_grid
     @time = Time.now
   end
 
   def score
     attempt = params[:word]
     letters = params[:letters]
-    p time = params[:time] || Time.now.to_s
-    p @time_attempt = Time.now - Time.parse(time)
-    @message = ""
-    if !word_in_grid?(attempt, letters)
-      @message = "The word does not exist in the grid"
-    elsif word_in_grid?(attempt, letters) && !english_word?(attempt)
-      @message = "The word must be an english word!!"
-    else
-      @message = "You win!!"
-    end
-    @message
+    time = params[:time] || Time.now.to_s
+    @time_attempt = Time.now - Time.parse(time)
+    @message = if !word_in_grid?(attempt, letters)
+                 'The word does not exist in the grid'
+               elsif word_in_grid?(attempt, letters) && !english_word?(attempt)
+                 'The word must be an english word!!'
+               else
+                 'You win!!'
+               end
   end
 
   private
@@ -29,9 +27,10 @@ class GamesController < ApplicationController
     alphabet = ('a'..'z').to_a
     vowels = %w[a e i o u]
     consonants = alphabet - vowels
-    grid = []
-    4.times { grid << vowels.sample }
-    6.times { grid << consonants.sample }
+    # grid = []
+    # 4.times { grid << vowels.sample }
+    # 6.times { grid << consonants.sample }
+    grid = vowels.sample(4) + consonants.sample(5)
     grid.shuffle
   end
 
