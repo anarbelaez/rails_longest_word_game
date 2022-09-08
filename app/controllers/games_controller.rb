@@ -4,11 +4,14 @@ require 'json'
 class GamesController < ApplicationController
   def new
     @letters = generate_grid # Letras aleatorias del alfabeto
+    @time = Time.now
   end
 
   def score
     attempt = params[:word]
     letters = params[:letters]
+    time = Time.parse(params[:time])
+    @time_attempt = Time.now - time
     @message = ""
     if !word_in_grid?(attempt, letters)
       @message = "The word does not exist in the grid"
