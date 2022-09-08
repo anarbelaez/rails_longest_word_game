@@ -10,8 +10,8 @@ class GamesController < ApplicationController
   def score
     attempt = params[:word]
     letters = params[:letters]
-    time = Time.parse(params[:time])
-    @time_attempt = Time.now - time
+    p time = params[:time] || Time.now.to_s
+    p @time_attempt = Time.now - Time.parse(time)
     @message = ""
     if !word_in_grid?(attempt, letters)
       @message = "The word does not exist in the grid"
@@ -30,8 +30,8 @@ class GamesController < ApplicationController
     vowels = %w[a e i o u]
     consonants = alphabet - vowels
     grid = []
-    3.times { grid << vowels.sample }
-    4.times { grid << consonants.sample }
+    4.times { grid << vowels.sample }
+    6.times { grid << consonants.sample }
     grid.shuffle
   end
 
@@ -41,7 +41,7 @@ class GamesController < ApplicationController
     # Con count se suma el numero de veces que aparece la letra y se compara con
     # el numero de veces que aparece en la grid dada. Si todos estos pasan all? devuelve
     # true, de lo contrario devuelve false
-    attempt.chars.all? { |letter| attempt.count(letter) <= grid.count(letter) }
+    attempt.chars.all? { |letter| attempt.count(letter) <= grid.count(letter) } if attempt
   end
 
   def english_word?(attempt)
