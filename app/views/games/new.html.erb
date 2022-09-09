@@ -1,16 +1,76 @@
-<h1>Longest word game!</h1>
+<div class="mt-5 mb-4">
+  <h1 class="display-3 fw-bold ls-4">Countdown</h1>
+</div>
 
-<% @letters.each do |word| %>
-<%= "#{word} " %>
-<% end %>
+<%# Rules %>
+<div class="row my-4">
+  <div class="col-4">
+   <%= image_tag "prettygirl.png", class: "img-fluid img-md float-end"%>
+  </div>
 
-<br><br><br>
+  <div class="col-8 d-flex align-items-center">
+    <div class="w-75">
+      <p class="fs-5">You have to enter <strong>the longest english word</strong> you can find using only letters in the grid.</p>
+    </div>
+  </div>
+</div>
+<%# End Rules %>
 
-<form action="/score" method="post" data-turbo="false">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <%# La siguiente linea crea una nueva key en el params! y asi podemos acceder %>
-  <%= hidden_field_tag :letters, @letters %>
-  <%= hidden_field_tag :time, @time %>
-  <input type="text" name="word" placeholder="Enter your longest word!">
-  <button type="submit" value="">Send</button>
-</form>
+<%# Show letters %>
+<div class="row">
+  <div class="col-12">
+
+    <div class="card-letters flex-center flex-wrap">
+
+      <% @letters.each do |letter| %>
+        <div class="card-letter flex-center bg-pink rounded text-kanit fs-1 m-2">
+        <%= letter %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<%# End show letters %>
+
+<%# Form %>
+<div class="row mt-5">
+  <div class="col-12">
+    <form action="/score" method="post" data-turbo="false" class="form-row">
+
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <%# La siguiente linea crea una nueva key en el params y asi podemos acceder a su value %>
+      <%= hidden_field_tag :letters, @letters %>
+      <%= hidden_field_tag :time, @time %>
+
+      <div class="col-12 px-5 d-flex justify-content-center" autocomplete="off">
+        <input type="hidden" autocomplete="off">
+        <input type="text" name="word" placeholder="Enter your longest word!" autocomplete="false" class="input-no-shadow bg-light fs-4 p-2 px-5 w-50 form-control border-0 rounded-end rounded-pill">
+        <button type="submit" class="btn btn-light rounded-start rounded-pill fs-4 px-4"><i class="text-petunia fa-solid fa-paper-plane"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+<%# End Form %>
+
+
+
+<%# <span class="letter">A</span>
+<span class="letter">B</span>
+<span class="letter">C</span>
+<span class="letter">D</span>
+<span class="letter">E</span>
+
+<script>
+
+const letters = document.querySelectorAll("span");
+console.log(letters);
+
+const array = ["red", "blue", "yellow", "green"];
+
+letters.forEach((letter) => {
+  const randomColor = array[Math.floor(Math.random() * array.length)];
+  letter.style.color = randomColor;
+});
+
+</script> %>

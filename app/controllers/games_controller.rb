@@ -2,6 +2,9 @@ require 'open-uri'
 require 'json'
 
 class GamesController < ApplicationController
+  def home
+  end
+
   def new
     @letters = generate_grid
     @time = Time.now
@@ -30,17 +33,26 @@ class GamesController < ApplicationController
     # grid = []
     # 4.times { grid << vowels.sample }
     # 6.times { grid << consonants.sample }
-    grid = vowels.sample(4) + consonants.sample(5)
+    # grid = vowels.sample(4) + consonants.sample(5)
+    grid = []
+    10.times do |i|
+      # i <= 4 ? grid << vowels.sample : grid << consonants.sample
+      grid << if i <= 4
+                vowels.sample
+              else
+                consonants.sample
+              end
+    end
     grid.shuffle
   end
 
-  def word_in_grid?(attempt, grid)
+  def word_in_grid?(attempt, letters)
     # El intento lo pasamos a array y con el enumerable all?
     # pasamos cada letra por el bloque donde se ejecuta una condicion
     # Con count se suma el numero de veces que aparece la letra y se compara con
-    # el numero de veces que aparece en la grid dada. Si todos estos pasan all? devuelve
+    # el numero de veces que aparece en la letters dada. Si todos estos pasan all? devuelve
     # true, de lo contrario devuelve false
-    attempt.chars.all? { |letter| attempt.count(letter) <= grid.count(letter) } if attempt
+    attempt.chars.all? { |letter| attempt.count(letter) <= letters.count(letter) } if attempt
   end
 
   def english_word?(attempt)
