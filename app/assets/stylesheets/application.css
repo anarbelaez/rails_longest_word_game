@@ -6,9 +6,9 @@
   --dark-purple: #1E1D30;
   --blue: #33A8C7;
   --aqua: #52E3E1;
-  --grass: #A0E426;
+  --grass: #7bb019;
   --lemon: #FDF148;
-  --orange: #FFAB00;
+  --orange: #de9400;
   --pink: #F050AE;
   --lavender: #D883FF;
   --petunia: #9336FD;
@@ -20,19 +20,27 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+
 .flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.input-no-shadow:focus {
+/* .input-no-shadow:focus {
   border-color: transparent;
   box-shadow: 0 0 0 0;
+} */
+
+@media (max-width: 1200px) {
+  /* For a screen < 540px, this CSS will be read */
+  input::placeholder {
+    opacity: 0 !important;
+  }
 }
 
 .img-md {
-  max-width: 9.4em;
+  max-width: 8em;
 }
 
 /* Text tags */

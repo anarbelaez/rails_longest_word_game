@@ -2,9 +2,6 @@ require 'open-uri'
 require 'json'
 
 class GamesController < ApplicationController
-  def home
-  end
-
   def new
     @letters = generate_grid
     @time = Time.now
