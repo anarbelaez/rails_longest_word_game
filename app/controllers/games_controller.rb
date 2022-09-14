@@ -8,38 +8,21 @@ class GamesController < ApplicationController
   end
 
   def score
-    attempt = params[:word]
-    letters = params[:letters]
     time = params[:time] || Time.now.to_s
-    @time_attempt = Time.now - Time.parse(time)
-    @message = if !word_in_grid?(attempt, letters)
-                 'The word does not exist in the grid'
-               elsif word_in_grid?(attempt, letters) && !english_word?(attempt)
-                 'The word must be an english word!!'
-               else
-                 'You win!!'
-               end
+    @message = score_and_message(params[:letters], time, params[:word])[1]
+    session[:score] ||= 0
+    session[:score] += score_and_message(params[:letters], time, params[:word])[0]
   end
 
   private
 
   def generate_grid
+    # Generamos la grid con 4 vocales y 5 consonantes
     alphabet = ('a'..'z').to_a
     vowels = %w[a e i o u]
     consonants = alphabet - vowels
-    # grid = []
-    # 4.times { grid << vowels.sample }
-    # 6.times { grid << consonants.sample }
-    # grid = vowels.sample(4) + consonants.sample(5)
     grid = []
-    10.times do |i|
-      # i <= 4 ? grid << vowels.sample : grid << consonants.sample
-      grid << if i <= 4
-                vowels.sample
-              else
-                consonants.sample
-              end
-    end
+    9.times { |i| i <= 4 ? grid << vowels.sample : grid << consonants.sample }
     grid.shuffle
   end
 
@@ -58,5 +41,26 @@ class GamesController < ApplicationController
     query = URI.open(url).read
     result = JSON.parse(query)
     result['found']
+  end
+
+  def compute_score(attempt, time)
+    time_attempt = Time.now - Time.parse(time)
+    time_attempt >= 30 ? 0 : attempt.size
+  end
+
+  def score_and_message(grid, time, attempt)
+    case attempt
+    when nil
+      [0, 'Do you want to play again? Click the button!']
+    else
+      if !word_in_grid?(attempt, grid)
+        [0, "Sorry, but #{attempt.upcase} can't be built out or #{grid.upcase.gsub(' ', '-')}"]
+      elsif word_in_grid?(attempt, grid) && !english_word?(attempt)
+        [0, "Sorry, but #{attempt.upcase} does not seem to be a valid English word!"]
+      else
+        score = compute_score(attempt, time)
+        [score, "Congratulations! #{attempt.upcase} is a valid English word!"]
+      end
+    end
   end
 end

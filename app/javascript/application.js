@@ -3,7 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 const letters = [...document.getElementsByClassName("card-letter")];
-const bgColorsClasses = ["bg-blue", "bg-grass", "bg-orange", "bg-pink", "bg-petunia"];
+const bgColorsClasses = ["bg-blue", "bg-orange", "bg-pink", "bg-petunia"];
 
 letters.forEach((letter) => {
   const bgColorSelected = bgColorsClasses[Math.floor(Math.random() * bgColorsClasses.length)];
